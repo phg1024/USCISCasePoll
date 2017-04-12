@@ -135,20 +135,19 @@ def on_status_fetch(status, casenumber):
                 f.write(status)
     return (changed, last_status)
 
+def get_days_since_received(status_detail):
+    "parse case status and computes number of days elapsed since case-received"
+    date_regex = re.compile(r'^On (\w+ +\d+, \d{4}), we received.*')
+    m = date_regex.match(status_detail)
+    datestr = m.group(1)
+    if not datestr:
+        return -1
+    recv_date = datetime.strptime(datestr, "%B %d, %Y").date()
+    today = date.today()
+    span = (today - recv_date).days
+    return span
 
 def main():
-    def get_days_since_received(status_detail):
-        "parse case status and computes number of days elapsed since case-received"
-        date_regex = re.compile(r'^On (\w+ +\d+, \d{4}), we received.*')
-        m = date_regex.match(status_detail)
-        datestr = m.group(1)
-        if not datestr:
-            return -1
-        recv_date = datetime.strptime(datestr, "%B %d, %Y").date()
-        today = date.today()
-        span = (today - recv_date).days
-        return span
-
     usage = """
     usage: %prog -c <case_number> [options]
     """

@@ -4,14 +4,12 @@ from time import sleep
 import sys
 
 if __name__ == '__main__':
-	#for i in range(100):
-	#	print np.random.poisson(10.0)
-	#sys.exit(0)
-	num_queries = int(sys.argv[1])
-	start = 121401
+	case_prefix = 'YSC1790%d'
+	start = int(sys.argv[1])
+	num_queries = int(sys.argv[2])
 	D = {}
 	for n in range(start, start+num_queries):
-		case_number = 'YSC1790%d' % n
+		case_number = case_prefix % n
 		code, status, detail = poll_optstatus(case_number)
 		if code == STATUS_ERROR:
 			print 'The case number %s is invalid.' % case_number
